@@ -14,14 +14,43 @@ HTMLBOILER='<!DOCTYPE html>\n
   </body>\n
 </html>'
 
-if [ ! -d "~/.code_templates" ]
+CSSBOILER="
+:root {
+
+}\n
+
+* {
+
+}\n
+
+body {
+
+}\n"
+
+PYTHONBOILER="#!/usr/bin/env python3"
+
+BASHBOILER="#!/bin/bash"
+
+if [ ! -d ~/.code_templates ]
 then
+    # DIRECTORY CREATION
     mkdir ~/.code_templates
     echo "templates directory created at $HOME/.code_templates"
-    echo -e $HTMLBOILER > ~/.code_templates/template.html # HTML TEMPLATE HERE
+    # TEMPLATES CREATION
+    echo -e "$HTMLBOILER" > ~/.code_templates/template.html # HTML TEMPLATE
+    echo -e "$CSSBOILER" > ~/.code_templates/template.css # CSS TEMPLATE
+    echo -e "$PYTHONBOILER" > ~/.code_templates/template.py # PYTHON TEMPLATE
 
 fi
 
-touch $1.$2
+# GET FILENAME FROM USER INPUT AND SPLIT BY . INTO ARRAY
+IFS="."
+read -a FILENAMEARRAY <<< "$1"
+# SAVE FILE EXTENSION TO VARIABLE
+FILEEXTENSION="${FILENAMEARRAY[1]}"
+IFS=" "
 
-cp ~/.code_templates/template.$2 ./$1.$2
+
+touch $1
+cp ~/.code_templates/template.$FILEEXTENSION ./$1
+
